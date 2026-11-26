@@ -78,3 +78,20 @@ def health_summary():
         "pdbs": pdbs,
         "sessions": sess,
     }
+
+
+# ---- Phase 4 metric queries ----
+SQL["sessions"] = """
+    SELECT inst_id, COUNT(*) total,
+           SUM(CASE WHEN type='USER' THEN 1 ELSE 0 END) user_sessions,
+           SUM(CASE WHEN type='USER' AND status='ACTIVE' THEN 1 ELSE 0 END) active_user,
+           SUM(CASE WHEN blocking_session IS NOT NULL THEN 1 ELSE 0 END) blocked
+    FROM gv$session GROUP BY inst_id ORDER BY inst_id"""
+SQL["tablespaces"] = """
+    SELECT c.name container, m.tablespace_name, ROUND(m.used_percent,2) used_pct
+    FROM cdb_tablespace_usage_metrics m JOIN v$containers c ON c.con_id = m.con_id
+    ORDER BY 1, 2"""
+SQL["fra"] = """
+    SELECT space_limit, space_used, space_reclaimable FROM v$recovery_file_dest"""
+SQL["asm"] = """
+    SELECT name, state, total_mb, free_mb FROM v$asm_diskgroup_stat ORDER BY name"""

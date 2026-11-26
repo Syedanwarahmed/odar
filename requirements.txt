@@ -10,6 +10,7 @@ httptools==0.9.0
 idna==3.20
 opentelemetry-api==1.45.2
 oracledb==26.2.0
+prometheus_client==0.26.0
 psycopg==3.3.9
 psycopg-binary==3.3.9
 pycparser==3.12
