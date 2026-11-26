@@ -1,0 +1,20 @@
+[Unit]
+Description=ODAR API (FastAPI)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=odar
+Group=odar
+WorkingDirectory=/opt/odar/app
+ExecStart=/opt/odar/venv/bin/uvicorn odar.main:app --host 0.0.0.0 --port 8000
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=yes
+ReadWritePaths=/var/log/odar /var/lib/odar
+
+[Install]
+WantedBy=multi-user.target
