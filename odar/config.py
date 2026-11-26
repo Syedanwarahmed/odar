@@ -1,4 +1,6 @@
 from functools import lru_cache
+from typing import Optional
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -10,6 +12,7 @@ class Settings(BaseSettings):
     log_dir: str = "/var/log/odar"
     log_level: str = "INFO"
     read_only: bool = True
+    db_dsn: Optional[str] = None
 
 
 @lru_cache
