@@ -31,14 +31,14 @@ class OracleCollector(Collector):
         names = {i["inst_id"]: i["instance_name"] for i in inst}
 
         g = GaugeMetricFamily("odar_instance_up", "1 if instance status is OPEN",
-                              labels=["instance", "host"])
+                              labels=["db_instance", "host"])
         for i in inst:
             g.add_metric([i["instance_name"], i["host_name"]], 1 if i["status"] == "OPEN" else 0)
         yield g
 
         pdbs = _safe("pdbs") or []
         g = GaugeMetricFamily("odar_pdb_open_rw", "1 if PDB is READ WRITE on the instance",
-                              labels=["pdb", "instance"])
+                              labels=["pdb", "db_instance"])
         for p in pdbs:
             if p["name"] != "PDB$SEED":
                 g.add_metric([p["name"], names.get(p["inst_id"], str(p["inst_id"]))],
@@ -46,9 +46,9 @@ class OracleCollector(Collector):
         yield g
 
         sess = _safe("sessions") or []
-        g1 = GaugeMetricFamily("odar_sessions_user", "User sessions", labels=["instance"])
-        g2 = GaugeMetricFamily("odar_sessions_active_user", "Active user sessions", labels=["instance"])
-        g3 = GaugeMetricFamily("odar_sessions_blocked", "Sessions waiting on a blocker", labels=["instance"])
+        g1 = GaugeMetricFamily("odar_sessions_user", "User sessions", labels=["db_instance"])
+        g2 = GaugeMetricFamily("odar_sessions_active_user", "Active user sessions", labels=["db_instance"])
+        g3 = GaugeMetricFamily("odar_sessions_blocked", "Sessions waiting on a blocker", labels=["db_instance"])
         for s in sess:
             n = names.get(s["inst_id"], str(s["inst_id"]))
             g1.add_metric([n], s["user_sessions"] or 0)
