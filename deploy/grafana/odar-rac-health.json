@@ -160,14 +160,14 @@
       "uid": "odar-prom"
      },
      "refId": "A",
-     "expr": "odar_instance_up",
+     "expr": "odar_instance_up{db_instance!=\"\"}",
      "legendFormat": "{{db_instance}}"
     }
    ],
    "options": {
     "colorMode": "background",
     "graphMode": "none",
-    "textMode": "name"
+    "textMode": "value_and_name"
    }
   },
   {
@@ -299,7 +299,7 @@
       "uid": "odar-prom"
      },
      "refId": "A",
-     "expr": "odar_sessions_user",
+     "expr": "odar_sessions_user{db_instance!=\"\"}",
      "legendFormat": "{{db_instance}} total"
     },
     {
@@ -308,7 +308,7 @@
       "uid": "odar-prom"
      },
      "refId": "B",
-     "expr": "odar_sessions_active_user",
+     "expr": "odar_sessions_active_user{db_instance!=\"\"}",
      "legendFormat": "{{db_instance}} active"
     }
    ]

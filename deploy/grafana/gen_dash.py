@@ -20,8 +20,8 @@ p("stat", "Oracle reachable", 0, 0, 4, 4, [{"expr": "odar_oracle_up"}], steps=UP
 p("stat", "Instances OPEN", 4, 0, 4, 4, [{"expr": "sum(odar_instance_up)"}],
   steps=[{"color": "red", "value": None}, {"color": "orange", "value": 1}, {"color": "green", "value": 2}],
   extra={"options": {"colorMode": "background", "graphMode": "none"}})
-p("stat", "Instance status", 8, 0, 8, 4, [{"expr": "odar_instance_up", "legendFormat": "{{db_instance}}"}],
-  steps=UPDOWN, extra={"options": {"colorMode": "background", "graphMode": "none", "textMode": "name"}})
+p("stat", "Instance status", 8, 0, 8, 4, [{"expr": "odar_instance_up{db_instance!=\"\"}", "legendFormat": "{{db_instance}}"}],
+  steps=UPDOWN, extra={"options": {"colorMode": "background", "graphMode": "none", "textMode": "value_and_name"}})
 p("stat", "Blocked sessions", 16, 0, 4, 4, [{"expr": "sum(odar_sessions_blocked)"}],
   steps=[G, {"color": "orange", "value": 1}, {"color": "red", "value": 5}],
   extra={"options": {"colorMode": "background", "graphMode": "none"}})
@@ -29,8 +29,8 @@ p("gauge", "FRA used %", 20, 0, 4, 4, [{"expr": "odar_fra_used_pct"}], unit="per
   extra={"fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100,
          "thresholds": {"mode": "absolute", "steps": PCT}}, "overrides": []}})
 p("timeseries", "User sessions per instance", 0, 4, 12, 8,
-  [{"expr": "odar_sessions_user", "legendFormat": "{{db_instance}} total"},
-   {"expr": "odar_sessions_active_user", "legendFormat": "{{db_instance}} active"}])
+  [{"expr": "odar_sessions_user{db_instance!=\"\"}", "legendFormat": "{{db_instance}} total"},
+   {"expr": "odar_sessions_active_user{db_instance!=\"\"}", "legendFormat": "{{db_instance}} active"}])
 p("bargauge", "ASM disk group used %", 12, 4, 12, 8,
   [{"expr": "odar_asm_dg_used_pct", "legendFormat": "{{diskgroup}}"}], unit="percent", steps=PCT,
   extra={"options": {"orientation": "horizontal", "displayMode": "gradient"},
