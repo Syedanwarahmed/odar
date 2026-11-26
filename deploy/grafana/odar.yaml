@@ -1,0 +1,7 @@
+apiVersion: 1
+providers:
+  - name: odar
+    folder: ODAR
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards/odar

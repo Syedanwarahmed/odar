@@ -1,0 +1,460 @@
+{
+ "uid": "odar-rac-health",
+ "title": "ODAR - RAC Health",
+ "tags": [
+  "odar",
+  "oracle",
+  "rac"
+ ],
+ "timezone": "browser",
+ "refresh": "30s",
+ "schemaVersion": 39,
+ "time": {
+  "from": "now-1h",
+  "to": "now"
+ },
+ "panels": [
+  {
+   "id": 1,
+   "type": "stat",
+   "title": "Oracle reachable",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "odar-prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 0,
+    "w": 4,
+    "h": 4
+   },
+   "fieldConfig": {
+    "defaults": {
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "red",
+        "value": null
+       },
+       {
+        "color": "green",
+        "value": 1
+       }
+      ]
+     },
+     "color": {
+      "mode": "thresholds"
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "odar-prom"
+     },
+     "refId": "A",
+     "expr": "odar_oracle_up"
+    }
+   ],
+   "options": {
+    "colorMode": "background",
+    "graphMode": "none"
+   }
+  },
+  {
+   "id": 2,
+   "type": "stat",
+   "title": "Instances OPEN",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "odar-prom"
+   },
+   "gridPos": {
+    "x": 4,
+    "y": 0,
+    "w": 4,
+    "h": 4
+   },
+   "fieldConfig": {
+    "defaults": {
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "red",
+        "value": null
+       },
+       {
+        "color": "orange",
+        "value": 1
+       },
+       {
+        "color": "green",
+        "value": 2
+       }
+      ]
+     },
+     "color": {
+      "mode": "thresholds"
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "odar-prom"
+     },
+     "refId": "A",
+     "expr": "sum(odar_instance_up)"
+    }
+   ],
+   "options": {
+    "colorMode": "background",
+    "graphMode": "none"
+   }
+  },
+  {
+   "id": 3,
+   "type": "stat",
+   "title": "Instance status",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "odar-prom"
+   },
+   "gridPos": {
+    "x": 8,
+    "y": 0,
+    "w": 8,
+    "h": 4
+   },
+   "fieldConfig": {
+    "defaults": {
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "red",
+        "value": null
+       },
+       {
+        "color": "green",
+        "value": 1
+       }
+      ]
+     },
+     "color": {
+      "mode": "thresholds"
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "odar-prom"
+     },
+     "refId": "A",
+     "expr": "odar_instance_up",
+     "legendFormat": "{{db_instance}}"
+    }
+   ],
+   "options": {
+    "colorMode": "background",
+    "graphMode": "none",
+    "textMode": "name"
+   }
+  },
+  {
+   "id": 4,
+   "type": "stat",
+   "title": "Blocked sessions",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "odar-prom"
+   },
+   "gridPos": {
+    "x": 16,
+    "y": 0,
+    "w": 4,
+    "h": 4
+   },
+   "fieldConfig": {
+    "defaults": {
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "orange",
+        "value": 1
+       },
+       {
+        "color": "red",
+        "value": 5
+       }
+      ]
+     },
+     "color": {
+      "mode": "thresholds"
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "odar-prom"
+     },
+     "refId": "A",
+     "expr": "sum(odar_sessions_blocked)"
+    }
+   ],
+   "options": {
+    "colorMode": "background",
+    "graphMode": "none"
+   }
+  },
+  {
+   "id": 5,
+   "type": "gauge",
+   "title": "FRA used %",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "odar-prom"
+   },
+   "gridPos": {
+    "x": 20,
+    "y": 0,
+    "w": 4,
+    "h": 4
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percent",
+     "min": 0,
+     "max": 100,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "orange",
+        "value": 80
+       },
+       {
+        "color": "red",
+        "value": 90
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "odar-prom"
+     },
+     "refId": "A",
+     "expr": "odar_fra_used_pct"
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "type": "timeseries",
+   "title": "User sessions per instance",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "odar-prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 4,
+    "w": 12,
+    "h": 8
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "odar-prom"
+     },
+     "refId": "A",
+     "expr": "odar_sessions_user",
+     "legendFormat": "{{db_instance}} total"
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "odar-prom"
+     },
+     "refId": "B",
+     "expr": "odar_sessions_active_user",
+     "legendFormat": "{{db_instance}} active"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "type": "bargauge",
+   "title": "ASM disk group used %",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "odar-prom"
+   },
+   "gridPos": {
+    "x": 12,
+    "y": 4,
+    "w": 12,
+    "h": 8
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percent",
+     "min": 0,
+     "max": 100,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "orange",
+        "value": 80
+       },
+       {
+        "color": "red",
+        "value": 90
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "odar-prom"
+     },
+     "refId": "A",
+     "expr": "odar_asm_dg_used_pct",
+     "legendFormat": "{{diskgroup}}"
+    }
+   ],
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "gradient"
+   }
+  },
+  {
+   "id": 8,
+   "type": "bargauge",
+   "title": "Tablespace used % (of max size)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "odar-prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 12,
+    "w": 24,
+    "h": 10
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percent",
+     "min": 0,
+     "max": 100,
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "orange",
+        "value": 80
+       },
+       {
+        "color": "red",
+        "value": 90
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "odar-prom"
+     },
+     "refId": "A",
+     "expr": "sort_desc(odar_tablespace_used_pct)",
+     "legendFormat": "{{container}} / {{tablespace}}",
+     "instant": true
+    }
+   ],
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "gradient"
+   }
+  },
+  {
+   "id": 9,
+   "type": "timeseries",
+   "title": "Exporter scrape duration",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "odar-prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 22,
+    "w": 24,
+    "h": 6
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s"
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "odar-prom"
+     },
+     "refId": "A",
+     "expr": "odar_scrape_duration_seconds",
+     "legendFormat": "seconds"
+    }
+   ]
+  }
+ ]
+}
