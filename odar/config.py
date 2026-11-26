@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     ora_user: Optional[str] = None
     ora_password: Optional[str] = None
     ora_dsn: Optional[str] = None
+    ai_provider: str = "mock"
+    ai_api_key: Optional[str] = None
+    ai_model: str = "claude-sonnet-5-5"
+    ai_max_tokens: int = 1500
 
 
 @lru_cache
