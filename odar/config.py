@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     read_only: bool = True
     db_dsn: Optional[str] = None
+    ora_user: Optional[str] = None
+    ora_password: Optional[str] = None
+    ora_dsn: Optional[str] = None
 
 
 @lru_cache
