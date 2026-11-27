@@ -107,3 +107,66 @@ def ai_diagnose_endpoint(req: DiagnoseRequest):
         return ai_diagnose(req.text, req.operator, req.include_metrics)
     except Exception as exc:
         raise HTTPException(status_code=503, detail=f"AI diagnose failed: {exc}")
+
+
+# ---------------- Phase 6: controlled automation ----------------
+from odar import actions  # noqa: E402
+
+
+class ActionRequestIn(BaseModel):
+    action: str
+    params: dict = {}
+    requested_by: str = Field(..., min_length=2)
+    reason: str = Field(..., min_length=5)
+
+
+class DecisionIn(BaseModel):
+    approver: str = Field(..., min_length=2)
+    comment: str = ""
+
+
+class ExecuteIn(BaseModel):
+    operator: str = Field(..., min_length=2)
+
+
+def _act(fn, *args):
+    try:
+        return fn(*args)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
+    except PermissionError as exc:
+        raise HTTPException(status_code=403, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"{type(exc).__name__}: {exc}")
+
+
+@app.get("/actions/catalog")
+def actions_catalog():
+    return actions.CATALOG
+
+
+@app.post("/actions/request")
+def actions_request(req: ActionRequestIn):
+    return _act(actions.request_action, req.action, req.params, req.requested_by, req.reason)
+
+
+@app.get("/actions/requests")
+def actions_list(status: str = None, limit: int = 50):
+    return _act(actions.list_requests, status, limit)
+
+
+@app.post("/actions/{request_id}/approve")
+def actions_approve(request_id: int, d: DecisionIn):
+    return _act(actions.decide, request_id, d.approver, True, d.comment)
+
+
+@app.post("/actions/{request_id}/reject")
+def actions_reject(request_id: int, d: DecisionIn):
+    return _act(actions.decide, request_id, d.approver, False, d.comment)
+
+
+@app.post("/actions/{request_id}/execute")
+def actions_execute(request_id: int, e: ExecuteIn):
+    return _act(actions.execute, request_id, e.operator)

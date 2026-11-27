@@ -20,6 +20,10 @@ class Settings(BaseSettings):
     ai_api_key: Optional[str] = None
     ai_model: str = "claude-sonnet-5-5"
     ai_max_tokens: int = 1500
+    exec_user: Optional[str] = None
+    exec_password: Optional[str] = None
+    exec_dsn: Optional[str] = None
+    allow_self_approval: bool = False
 
 
 @lru_cache
